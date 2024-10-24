@@ -1,6 +1,7 @@
 import Express from 'express';
 import { User, criarTabelas } from './db.js'
 import bcryptjs from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 const app = Express()
 app.use(Express.json())
 
@@ -21,7 +22,7 @@ app.post('/registro', async function (req, res) {
             res.status(406).send('todos os campos devem ser preenchidos')
             return
         }
-        if(await User.findOne({where:{email:email}})){
+        if (await User.findOne({ where: { email: email } })) {
             res.status(400).send('usuario ja existe no sistema')
             return
         }
@@ -38,5 +39,42 @@ app.post('/registro', async function (req, res) {
         console.log(erro)
     }
 })
+app.post('/login', async function (req, res) {
+    try {
+        const { email, senha } = req.body
+        if (!email || !senha) {
+            res.send("todos os campos devem ser preenchidos")
+            return
+        }
+        const usuario = await User.findOne({ where: { email: email } })
+        if (!usuario) {
+            res.send('este email nao esta cadastrado')
+            return
+        }
+        const senhaCorreta = bcryptjs.compareSync(senha, usuario.senha)  //compara a senha digitada com a senha salva
+        if (!senhaCorreta) {
+            res.send('senha correta')
+            return
+        }
+        const token = jwt.sign(
+            {
+                nome: usuario.nome,
+                email: usuario.email,
+                status: usuario.status
+            },
+            'chavecriptografiasupersegyura',
+            { expiresIn: "30d" }
+        )
+        res.send({ msg: 'voce foi logado', token: token })
 
+    } catch (erro) {
+        console.log(erro)
+        res.status(500).send('Houve um problema')
+    }
+    //validar informações
+    // verificar a existência do usuario
+    // comparo a senha enviada com a senha do db
+    //criar um token de autenticação
+    // devolver a resposta com o token
+})
 app.listen(8000)
