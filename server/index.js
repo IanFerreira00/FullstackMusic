@@ -2,9 +2,10 @@ import Express from 'express';
 import { User, criarTabelas } from './db.js'
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import cors from 'cors'
 const app = Express()
 app.use(Express.json())
-
+app.use (cors())
 // app.get('/pegar', function (req, res) {
 //     res.send('enviar esta mensagem')
 // })
