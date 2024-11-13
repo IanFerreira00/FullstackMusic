@@ -1,7 +1,6 @@
 import Express from 'express';
 import { User, criarTabelas } from './db.js'
-import bcryptjs from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+import { rotas_autenticacao } from "./rotas/rotas_autenticacao.js";
 import cors from 'cors'
 const app = Express()
 app.use(Express.json())
@@ -15,67 +14,6 @@ app.use (cors())
 // })
 
 //criarTabelas() --> usar so uma vez já que com o 'force: true' ele sempre apaga a tabela existente e cria uma nova do zero
-app.post('/registro', async function (req, res) {
-    // verificar se todos os campos foram enviados
-    try {
-        const { nome, sobrenome, email, senha, dataNascimento } = req.body
-        if (!nome || !sobrenome || !email || !senha || !dataNascimento) {
-            res.status(406).send('todos os campos devem ser preenchidos')
-            return
-        }
-        if (await User.findOne({ where: { email: email } })) {
-            res.status(400).send('usuario ja existe no sistema')
-            return
-        }
-        const senhaSegura = bcryptjs.hashSync(senha, 10)
-        const novoUsuario = User.create({
-            nome: nome,
-            sobrenome: sobrenome,
-            email: email,
-            senha: senhaSegura,
-            dataNascimento: dataNascimento,
-        })
-        res.status(201).send('ok usuario criado')
-    } catch (erro) {
-        console.log(erro)
-    }
-})
-app.post('/login', async function (req, res) {
-    try {
-        const { email, senha } = req.body
-        if (!email || !senha) {
-            res.send("todos os campos devem ser preenchidos")
-            return
-        }
-        const usuario = await User.findOne({ where: { email: email } })
-        if (!usuario) {
-            res.send('este email nao esta cadastrado')
-            return
-        }
-        const senhaCorreta = bcryptjs.compareSync(senha, usuario.senha)  //compara a senha digitada com a senha salva
-        if (!senhaCorreta) {
-            res.send('senha correta')
-            return
-        }
-        const token = jwt.sign(
-            {
-                nome: usuario.nome,
-                email: usuario.email,
-                status: usuario.status
-            },
-            'chavecriptografiasupersegyura',
-            { expiresIn: "30d" }
-        )
-        res.send({ msg: 'voce foi logado', token: token })
 
-    } catch (erro) {
-        console.log(erro)
-        res.status(500).send('Houve um problema')
-    }
-    //validar informações
-    // verificar a existência do usuario
-    // comparo a senha enviada com a senha do db
-    //criar um token de autenticação
-    // devolver a resposta com o token
-})
+app.use('/autenticacao', rotas_autenticacao )
 app.listen(8000)
