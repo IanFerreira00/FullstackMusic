@@ -1,3 +1,5 @@
+import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 
@@ -10,6 +12,7 @@ const Cadastro = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const router = useRouter()
 
   const handleRegister = async () => {
     if (password !== confirmPassword) {
@@ -27,7 +30,7 @@ const Cadastro = ({ navigation }) => {
         body: JSON.stringify({
           nome: firstName,
           sobrenome: lastName,
-          dataNascimento: birthDate,
+          dataNasc: birthDate,
           email: email,
           senha: password
         })
@@ -37,11 +40,9 @@ const Cadastro = ({ navigation }) => {
         window.alert('ERRO: Usuário já cadastrado!');
       } else if (response.status === 406) {
         window.alert('ERRO: Preencha todos os campos!');
-      } else if (response.status === 201) {
-        navigation.navigate('Perfil');
-      } else {
-        window.alert('ERRO: Ocorreu um erro inesperado');
       }
+        router.push('/Login');
+    
     } catch (error) {
       window.alert('ERRO: Não foi possível conectar ao servidor');
     }
