@@ -8,7 +8,52 @@ const { width } = Dimensions.get('window');
 
 const navigate = useRouter()
 
-const Login = () => {
+const Login = ({ navigation }) => {
+  const user = {email: 'admin', senha: 'admin'}
+  const router = useRouter()
+  const [showPassword, setShowPassword] = useState(true)
+  const [formData, setFormData] = useState({
+      email: '',
+      senha: ''
+  })
+  const handleInputChange = (name, value) => {
+    setFormData({
+        ...formData,
+        [name]: value
+    });
+};
+
+const handleButton = async () => {
+    if (!formData.email || !formData.senha ) {
+        alert('Preencha todos os campos');
+        return;
+    }
+     try {
+        const response = await fetch('http://localhost:8000/autenticacao/login/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        console.log(response)
+        if (response.status === 404) {
+            alert('Email não encontrado');
+            return
+        }
+        if (response.status === 403){
+            alert('Senha incorreta');
+            return
+        }
+        router.push('/home')
+
+    } catch (error) {
+        console.error('Erro:', error);
+    } 
+    
+};
   return (
     
     <View style={styles.container}>
@@ -22,6 +67,8 @@ const Login = () => {
           placeholderTextColor="#666"
           keyboardType="email-address"
           autoCapitalize="none"
+          value={formData.email}
+          onChangeText={(value) => handleInputChange('email', value)}
         />
       </View>
 
@@ -31,10 +78,13 @@ const Login = () => {
           style={styles.input}
           placeholder="Senha"
           placeholderTextColor="#666"
+          value={formData.senha}
+          onChangeText={(value) => handleInputChange('senha', value)}
+          secureTextEntry={showPassword}
         />
       </View>
-      <Link href={''}>
-        <Pressable style={styles.button}>
+      <Link href={'/perfil'}>
+        <Pressable style={styles.button} onPress={() => setShowPassword(!showPassword)}>
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
       </Link>

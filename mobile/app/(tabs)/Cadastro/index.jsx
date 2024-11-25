@@ -1,69 +1,119 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet, Alert, Dimensions } from 'react-native';
-import { Link, useRouter } from 'expo-router'
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Entypo from '@expo/vector-icons/Entypo';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get('window'); 
 
-const navigate = useRouter()
+const Cadastro = ({ navigation }) => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [birthDate, setBirthDate] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-const Cadastro = () => {
+  const handleRegister = async () => {
+    if (password !== confirmPassword) {
+      window.alert('ERRO: As senhas não coincidem');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8000/autenticacao/registro', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nome: firstName,
+          sobrenome: lastName,
+          dataNascimento: birthDate,
+          email: email,
+          senha: password
+        })
+      });
+
+      if (response.status === 400) {
+        window.alert('ERRO: Usuário já cadastrado!');
+      } else if (response.status === 406) {
+        window.alert('ERRO: Preencha todos os campos!');
+      } else if (response.status === 201) {
+        navigation.navigate('Perfil');
+      } else {
+        window.alert('ERRO: Ocorreu um erro inesperado');
+      }
+    } catch (error) {
+      window.alert('ERRO: Não foi possível conectar ao servidor');
+    }
+  };
+
   return (
-    
     <View style={styles.container}>
-      <Text style={styles.title}>Cadastro</Text>
-
+      <Text style={styles.title}>Cadastrar</Text>
       <View style={styles.inputContainer}>
-      <Entypo name="email" size={18} color="#666" style={styles.icon} />
         <TextInput
           style={styles.input}
-          placeholder="Nome de usuário"
-          placeholderTextColor="#666"
-          keyboardType="email-address"
-          autoCapitalize="none"
+          placeholder="Nome"
+          placeholderTextColor="#888"
+          value={firstName}
+          onChangeText={setFirstName}
         />
       </View>
       <View style={styles.inputContainer}>
-        <Icon name="user" size={20} color="#666" style={styles.icon} />
+        <TextInput
+          style={styles.input}
+          placeholder="Sobrenome"
+          placeholderTextColor="#888"
+          value={lastName}
+          onChangeText={setLastName}
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Data de Nascimento (DD/MM/AAAA)"
+          placeholderTextColor="#888"
+          keyboardType="numeric"
+          value={birthDate}
+          onChangeText={setBirthDate}
+        />
+      </View>
+      <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
           placeholder="Email"
-          placeholderTextColor="#666"
+          placeholderTextColor="#888"
           keyboardType="email-address"
-          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
         />
       </View>
-
       <View style={styles.inputContainer}>
-        <Icon name="lock" size={20} color="#666" style={styles.icon} />
         <TextInput
           style={styles.input}
           placeholder="Senha"
-          placeholderTextColor="#666"
+          placeholderTextColor="#888"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
         />
       </View>
       <View style={styles.inputContainer}>
-        <Icon name="lock" size={20} color="#666" style={styles.icon} />
         <TextInput
           style={styles.input}
-          placeholder="Confirmar senha"
-          placeholderTextColor="#666"
+          placeholder="Confirmar Senha"
+          placeholderTextColor="#888"
+          secureTextEntry
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
         />
       </View>
-      <Link href={''}>
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Cadastrar</Text>
-        </Pressable>
-      </Link>
-      <Pressable
-        style={styles.forgotPassword}
-        onPress={() => navigate.push('/Login')}
-      >
-        <Text style={styles.forgotPasswordText}>Já tem uma conta?</Text>
-      </Pressable>
-
-
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Cadastrar</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <Text style={styles.forgotPasswordText}>Já tem uma conta? Faça Login</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -92,17 +142,13 @@ const styles = StyleSheet.create({
     borderColor: '#400207',
     marginBottom: 20,
     width: width * 0.9,
-    borderRadius: 5
-  },
-  icon: {
-    marginRight: 10,
+    borderRadius: 5,
   },
   input: {
     flex: 1,
     height: 50,
     fontSize: 16,
     color: '#4CAF50',
-
   },
   button: {
     width: width * 0.9,
@@ -118,12 +164,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  forgotPassword: {
-    marginTop: 15,
-  },
   forgotPasswordText: {
     color: '#F20530',
+    marginTop: 15,
   },
 });
 
-export default Cadastro ;
+export default Cadastro;

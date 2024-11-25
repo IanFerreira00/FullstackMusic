@@ -1,39 +1,31 @@
 import React from 'react';
-import { View, Text, Image, Pressable, StyleSheet, Dimensions } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Entypo from '@expo/vector-icons/Entypo';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const { width } = Dimensions.get('window');
-
-const UserProfile = () => {
+const Perfil = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Perfil do Usuário</Text>
-
+      
       <View style={styles.profileImageContainer}>
-        <Image
-          source={{ uri: 'https://via.placeholder.com/150' }} // Link para uma imagem de perfil temporária
-          style={styles.profileImage}
-        />
+        <View style={styles.profileImage}>
+          <Text style={styles.imagePlaceholder}>150 x 150</Text>
+        </View>
       </View>
+      
+      <Text style={styles.userName}>Nome do Usuário</Text>
+      <Text style={styles.userEmail}>usuario@exemplo.com</Text>
 
-      <Text style={styles.username}>Nome do Usuário</Text>
-      <Text style={styles.email}>usuario@exemplo.com</Text>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Editar Perfil</Text>
+      </TouchableOpacity>
 
-      <View style={styles.optionsContainer}>
-        <Pressable style={styles.optionButton}>
-          <Icon name="user" size={20} color="#fff" style={styles.optionIcon} />
-          <Text style={styles.optionText}>Editar Perfil</Text>
-        </Pressable>
-        <Pressable style={styles.optionButton}>
-          <Entypo name="lock" size={20} color="#fff" style={styles.optionIcon} />
-          <Text style={styles.optionText}>Alterar Senha</Text>
-        </Pressable>
-        <Pressable style={styles.optionButton}>
-          <Icon name="sign-out" size={20} color="#fff" style={styles.optionIcon} />
-          <Text style={styles.optionText}>Sair</Text>
-        </Pressable>
-      </View>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Alterar Senha</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Sair</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -41,60 +33,62 @@ const UserProfile = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#000000',
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: 'black',
-    height: '100%',
-    width: '100%',
+    justifyContent: 'center',
+    padding: 16,
   },
   title: {
-    fontSize: 34,
+    fontSize: 24,
+    color: '#ff0000',
     fontWeight: 'bold',
-    marginBottom: 30,
-    color: '#F20530',
+    marginBottom: 20,
   },
   profileImageContainer: {
-    borderWidth: 3,
-    borderColor: '#F20530',
+    borderWidth: 2,
+    borderColor: '#ff0000',
     borderRadius: 75,
-    padding: 5,
+    width: 150,
+    height: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 20,
   },
   profileImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    backgroundColor: '#d3d3d3',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  username: {
-    fontSize: 24,
+  imagePlaceholder: {
+    color: '#999999',
+  },
+  userName: {
+    fontSize: 20,
+    color: '#00ff00',
     fontWeight: 'bold',
-    color: '#4CAF50',
     marginBottom: 5,
   },
-  email: {
+  userEmail: {
     fontSize: 16,
-    color: '#666',
-    marginBottom: 30,
+    color: '#999999',
+    marginBottom: 20,
   },
-  optionsContainer: {
-    width: width * 0.9,
-  },
-  optionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 15,
-    backgroundColor: '#BF0426',
+  button: {
+    backgroundColor: '#ff0000',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
     borderRadius: 5,
-    marginBottom: 15,
+    width: '80%',
+    alignItems: 'center',
+    marginBottom: 10,
   },
-  optionIcon: {
-    marginRight: 10,
-  },
-  optionText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 16,
   },
 });
 
-export default UserProfile;
+export default Perfil;

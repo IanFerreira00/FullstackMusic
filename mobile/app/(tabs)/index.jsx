@@ -1,39 +1,23 @@
-import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native'
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import SplashScreen from './SplashScreen';
+import Login from './Login';
+import Cadastro from './Cadastro';
+import Home from './Home';
 
+const Stack = createStackNavigator();
 
-const splashScreen = () =>{
-    const router = useRouter()
-    useEffect(() =>{
-        const timer = setTimeout(() =>{
-            router.push('/perfil')
-        }, 2500)
-        return() => clearTimeout(timer)
-    }, [])
-    
-    return(
-        <View style={styles.container}>
-            <Image style={styles.image}
-            source={require('../../assets/images/logo.png')}
-            />
-        </View>
-    )
-}
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'black',
-        width: '100%',
-        height:'100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    image:{
-        width:'350px',
-        height:'350px'
+const App = () => {
+  return (
+    <NavigationContainer independent={true}>
+      <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Splash" component={SplashScreen} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Cadastro} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
-    }
-
-})
-export default splashScreen
+export default App;
