@@ -1,125 +1,167 @@
 import React from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 
 const HomeScreen = () => {
   const songs = [
-    { id: 1, title: 'Song One', image: 'https://via.placeholder.com/100' },
-    { id: 2, title: 'Song Two', image: 'https://via.placeholder.com/100' },
-    { id: 3, title: 'Song Three', image: 'https://via.placeholder.com/100' },
-    { id: 4, title: 'Song Three', image: 'https://via.placeholder.com/100' },
-    { id: 5, title: 'Song Three', image: 'https://via.placeholder.com/100' }
+    { id: 1, title: 'Over', artist: 'Playboi Carti', image: '../../../assets/images/wlr.png' },
+    { id: 2, title: 'ASTROTHUNDER', artist: 'Travis Scott', image: '../../../assets/images/astroworld.png' },
+    { id: 3, title: 'Dogs', artist: 'Pink Floyd', image: '../../../assets/images/animals.png' },
+    { id: 4, title: 'Location', artist: 'Playboi Carti', image: '../../../assets/images/selftitled.png' },
+    { id: 5, title: 'EARFQUAKE', artist: 'Tyler, The Creator, Playboi Carti', image: '../../../assets/images/earfquake.png' },
+    { id: 6, title: 'Isso é Sério', artist: 'Matuê, Brandao085', image: '../../../assets/images/333.png' },
+    { id: 7, title: 'Embalo', artist: 'Ryu, The Runner, Yunk Vino, Teto', image: '../../../assets/images/embalo.png' },
+    { id: 8, title: 'Hoe Cakes', artist: 'MFDOOM', image: '../../../assets/images/HOECAKES.png' },
   ];
 
   const albums = [
-    { id: 1, title: 'Whole Lotta Red', image: 'https://via.placeholder.com/100' },
-    { id: 2, title: 'WUNNA', image: 'https://via.placeholder.com/100' },
-    { id: 3, title: 'Blonde', image: 'https://via.placeholder.com/100' },
-    { id: 4, title: 'Song Three', image: 'https://via.placeholder.com/100' },
-    { id: 5, title: 'Song Three', image: 'https://via.placeholder.com/100' }
+    { id: 1, title: 'Whole Lotta Red', artist: 'Playboi carti', image: '../../../assets/images/wlr.png' },
+    { id: 2, title: 'WUNNA', artist: 'Gunna', image: '../../../assets/images/wunna.png' },
+    { id: 3, title: 'Blonde', artist: 'Frank Ocean', image: '../../../assets/images/blonde.png' },
+    { id: 4, title: 'DAMN.', artist: 'Kendrick Lamar', image: '../../../assets/images/damn.png' },
+    { id: 5, title: 'Caos', artist: 'Alee', image: '../../../assets/images/caos.png' },
+    { id: 6, title: "We Don't Trust You", artist: 'Future, Metro Boomin', image: '../../../assets/images/wdtu.png' },
+    { id: 7, title: 'A Great Chaos', artist: 'Ken Carson', image: '../../../assets/images/agc.png' },
+    { id: 8, title: '333', artist: 'Matuê', image: '../../../assets/images/333.png' },
   ];
 
   const artists = [
-    { id: 1, title: 'Artist A', image: 'https://via.placeholder.com/100' },
-    { id: 2, title: 'Artist B', image: 'https://via.placeholder.com/100' },
-    { id: 3, title: 'Artist C', image: 'https://via.placeholder.com/100' },
-    { id: 4, title: 'Song Three', image: 'https://via.placeholder.com/100' },
-    { id: 5, title: 'Song Three', image: 'https://via.placeholder.com/100' }
+    { id: 1, title: 'Playboi Carti', image: '../../../assets/images/pbc.png' },
+    { id: 2, title: 'Gunna', image: '../../../assets/images/gunna.png' },
+    { id: 3, title: 'Travis Scott', image: '../../../assets/images/travis.png' },
+    { id: 4, title: 'Leozin', image: '../../../assets/images/leozin.png' },
+    { id: 5, title: 'Young Thug', image: '../../../assets/images/thug.png' },
+    { id: 6, title: 'Brandão085', image: '../../../assets/images/brandao.png' },
+    { id: 7, title: 'Yeat', image: '../../../assets/images/yeat.png' },
+    { id: 8, title: 'Pink Floyd', image: '../../../assets/images/pkf.png' },
   ];
 
-  const renderGrid = (items) => (
-    <View style={styles.grid}>
+  const renderHorizontalList = (items) => (
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalList}>
       {items.map((item) => (
-        <TouchableOpacity key={item.id} style={styles.card}>
-          <Image source={{ uri: item.image }} style={styles.cardImage} />
-          <Text style={styles.cardTitle}>{item.title}</Text>
+        <TouchableOpacity key={item.id} style={styles.itemContainer}>
+          <Image source={item.image} style={styles.itemImage} />
+          <Text style={styles.itemTitle}>{item.title}</Text>
+          <Text style={styles.artistTitle}>{item.artist}</Text>
         </TouchableOpacity>
       ))}
-    </View>
+    </ScrollView>
   );
 
   return (
     <View style={styles.container}>
-
       <View style={styles.header}>
-        <Text style={styles.title}>MusicApp</Text>
+        <Image style={styles.logonav} source={require('../../../assets/images/logo.png')} />
+        <View style={styles.navbar}>
+          <TouchableOpacity style={styles.navItem}>
+            <Text style={[styles.navText, styles.activeNavText]}>Início</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navItem}>
+            <Text style={styles.navText}>Busca</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navItem}>
+            <Text style={styles.navText}>Biblioteca</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navItem}>
+            <Text style={styles.navText}>Perfil</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
-
       <ScrollView>
-
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Músicas</Text>
-          {renderGrid(songs)}
+          {renderHorizontalList(songs)}
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Albuns</Text>
-          {renderGrid(albums)}
+          <Text style={styles.sectionTitle}>Álbuns</Text>
+          {renderHorizontalList(albums)}
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Artistas</Text>
-          {renderGrid(artists)}
+          {renderHorizontalList(artists)}
         </View>
       </ScrollView>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000', 
+    backgroundColor: '#161616',
   },
   header: {
-    padding: 10,
-    backgroundColor: '#e50914', 
+    backgroundColor: '#fffff',
+    padding: 6,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   title: {
     color: '#fff',
     fontSize: 24,
     fontWeight: 'bold',
-  },
-  
-  highlightText: {
-    color: '#fff',
-    fontSize: 18,
     textAlign: 'center',
+    marginBottom: 10,
+  },
+  navbar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '20%',
+    marginRight: '20px'
+  },
+  navItem: {
+    alignItems: 'center',
+  },
+  navText: {
+    color: '#fff',
+    fontSize: 14,
+    marginTop: 5,
+  },
+  activeNavText: {
+    color: '#e50914',
+    fontWeight: 'bold',
   },
   section: {
     marginBottom: 20,
-    paddingHorizontal: 10,
   },
   sectionTitle: {
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
+    marginLeft: 10,
     marginBottom: 10,
   },
-  grid: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between'
+  horizontalList: {
+    paddingHorizontal: 10,
   },
-  card: {
-    backgroundColor: '#1a1a1a',
-    borderRadius: 10,
-    padding: 80,
+  itemContainer: {
+    marginRight: 15,
     alignItems: 'center',
-    marginBottom: 10,
-    width: '300',
   },
-  cardImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 5,
-    marginBottom: 10,
+  itemImage: {
+    width: 150,
+    height: 150,
   },
-  cardTitle: {
+  itemTitle: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 13,
+    marginTop: 5,
     textAlign: 'center',
+    width: 100,
+  },
+  artistTitle: {
+    color: '#fff',
+    fontSize: 10,
+    marginTop: 5,
+    textAlign: 'center',
+    width: 100,
+  },
+  logonav: {
+    width: 50,
+    height: 50,
   },
 });
 
