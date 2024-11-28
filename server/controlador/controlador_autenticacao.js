@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 
 const registro = async (req, res) => {
-    // verificar se todos os campos foram enviados
+
     try {
         const { nome, sobrenome, email, senha, dataNascimento } = req.body
         if (!nome || !sobrenome || !email || !senha || !dataNascimento) {
@@ -67,4 +67,31 @@ const login = async (req, res) => {
     // devolver a resposta com o token
 }
 
-export { registro, login }
+const nova_senha = async (req, res) => {
+
+    try {
+        const {  senha } = req.body
+        const { email } = req.params
+        if ( !senha ) {
+            res.status(406).send('todos os campos devem ser preenchidos')
+            return
+        }
+        const usuario = await User.findOne({ where: { email: email } })
+           
+        if ( !usuario) {
+            res.status(404).send('usuario não encontrado!')
+            return
+        }
+
+        const senhaSegura = bcryptjs.hashSync(senha, 10)
+        const novoUsuario = usuario.update({
+            senha: senhaSegura
+        })
+        res.status(200).send('senha alterada com sucesso')
+    } catch (erro) {
+        console.log(erro)
+        res.status(500).send('erro no servidor')
+    }
+}
+
+export { registro, login, nova_senha }

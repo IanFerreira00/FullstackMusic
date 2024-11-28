@@ -1,15 +1,19 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons';
+import { Link } from 'expo-router';
 
 const PlayerScreen = () => {
   return (
     <View style={styles.container}>
-
       <View style={styles.header}>
-        <Text style={styles.title}>Now Playing</Text>
+        <Link href="../Home" style={{ zIndex: 10 }}>
+          <Text style={styles.backButton}>{'<'} Voltar</Text>
+        </Link>
+        <Link href='../perfil'>
+        <Text style={styles.headerTitle}>Perfil</Text>
+        </Link>
       </View>
-
 
       <View style={styles.albumContainer}>
         <Image
@@ -23,7 +27,6 @@ const PlayerScreen = () => {
         <Text style={styles.artistName}>Playboi Carti</Text>
       </View>
 
-
       <View style={styles.controls}>
         <TouchableOpacity>
           <Ionicons name="play-skip-back" size={36} color="#fff" />
@@ -36,7 +39,6 @@ const PlayerScreen = () => {
         </TouchableOpacity>
       </View>
 
- 
       <View style={styles.progressBarContainer}>
         <Text style={styles.time}>1:45</Text>
         <View style={styles.progressBarBackground}>
@@ -51,26 +53,33 @@ const PlayerScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#161616', 
+    paddingHorizontal: 20, 
+    paddingTop: 20, 
   },
   header: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
     padding: 10,
-    backgroundColor: '#e50914',
-    alignItems: 'center',
+    marginBottom: 20,
   },
-  title: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
+  backButton: {
+    color: '#e50914', 
+  },
+  headerTitle: {
+    color: '#e50914', 
   },
   albumContainer: {
     alignItems: 'center',
     marginVertical: 30,
   },
   albumArt: {
-    width:250,
-    height: 250,
+    width: 220,
+    height: 220,
     borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#444', 
   },
   songDetails: {
     alignItems: 'center',
@@ -87,13 +96,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   controls: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
-    paddingHorizontal: 50,
-    gap: '40px'
+    gap: 40, 
   },
   progressBarContainer: {
     flexDirection: 'row',
@@ -115,7 +122,7 @@ const styles = StyleSheet.create({
   progressBar: {
     width: '50%', 
     height: '100%',
-    backgroundColor: '#e50914',
+    backgroundColor: '#e50914', 
     borderRadius: 2,
   },
 });

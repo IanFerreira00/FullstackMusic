@@ -5,6 +5,7 @@ import SplashScreen from './SplashScreen';
 import Login from './Login';
 import Cadastro from './Cadastro';
 import Home from './Home';
+import ProfileScreen from './perfil';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,9 @@ const App = () => {
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Cadastro} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

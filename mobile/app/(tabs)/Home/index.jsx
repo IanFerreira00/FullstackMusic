@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Link, useRouter } from 'expo-router'
 
 const HomeScreen = () => {
   const songs = [
@@ -61,17 +62,21 @@ const HomeScreen = () => {
           <TouchableOpacity style={styles.navItem}>
             <Text style={styles.navText}>Biblioteca</Text>
           </TouchableOpacity>
+          <Link href={"/perfil"}>
           <TouchableOpacity style={styles.navItem}>
             <Text style={styles.navText}>Perfil</Text>
           </TouchableOpacity>
+          </Link>
         </View>
       </View>
 
       <ScrollView>
+        <Link href={"/Player"}>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Músicas</Text>
           {renderHorizontalList(songs)}
         </View>
+        </Link>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Álbuns</Text>
@@ -94,10 +99,11 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#fffff',
-    padding: 6,
+    padding: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    
   },
   title: {
     color: '#fff',
@@ -131,11 +137,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
-    marginLeft: 10,
+    marginLeft: 40,
     marginBottom: 10,
   },
   horizontalList: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 40,
+    display: 'flex',
+    gap: '30px'
   },
   itemContainer: {
     marginRight: 15,

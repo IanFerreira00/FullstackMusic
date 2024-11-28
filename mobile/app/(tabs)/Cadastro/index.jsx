@@ -30,7 +30,7 @@ const Cadastro = ({ navigation }) => {
         body: JSON.stringify({
           nome: firstName,
           sobrenome: lastName,
-          dataNasc: birthDate,
+          dataNascimento: birthDate,
           email: email,
           senha: password
         })
@@ -41,7 +41,9 @@ const Cadastro = ({ navigation }) => {
       } else if (response.status === 406) {
         window.alert('ERRO: Preencha todos os campos!');
       }
+      if(response.status == 201){
         router.push('/Login');
+      }
     
     } catch (error) {
       window.alert('ERRO: Não foi possível conectar ao servidor');

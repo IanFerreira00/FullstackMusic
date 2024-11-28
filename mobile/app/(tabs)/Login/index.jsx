@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet, Alert, Dimensions } from 'react-native';
+import { View, Text, TextInput, Pressable, StyleSheet, Alert, Dimensions, TouchableOpacity } from 'react-native';
 import { Link, useRouter } from 'expo-router'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const { width } = Dimensions.get('window');
 
 const navigate = useRouter()
 
-const Login = ({ navigation }) => {
+const Login = () => {
   const user = {email: 'admin', senha: 'admin'}
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(true)
@@ -47,12 +48,24 @@ const handleButton = async () => {
             alert('Senha incorreta');
             return
         }
-        router.push('/home')
+        if (response.status === 200) {
+          storeData(formData.email)
+          router.push('/Home')
+        }
+        
 
     } catch (error) {
         console.error('Erro:', error);
     } 
     
+};
+
+const storeData = async (value) => {
+  try {
+    await AsyncStorage.setItem('email', value);
+  } catch (e) {
+    console.log('erro')
+  }
 };
   return (
     
@@ -83,11 +96,9 @@ const handleButton = async () => {
           secureTextEntry={showPassword}
         />
       </View>
-      <Link href={'/perfil'}>
-        <Pressable style={styles.button} onPress={() => setShowPassword(!showPassword)}>
+        <TouchableOpacity style={styles.button} onPress={handleButton}>
           <Text style={styles.buttonText}>Login</Text>
-        </Pressable>
-      </Link>
+        </TouchableOpacity>
       <Pressable
         style={styles.forgotPassword}
         onPress={() => navigate.push('/Cadastro')}
